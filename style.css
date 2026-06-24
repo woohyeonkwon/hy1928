@@ -1,0 +1,2 @@
+body { background-color: #111; color: #0f0; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+.board { border: 5px solid #333; padding: 50px; font-size: 3rem; text-transform: uppercase; }

@@ -1,0 +1,29 @@
+<h3>관리자 이미지 업로드</h3>
+<input type="text" id="textInput" placeholder="전광판 문구">
+<input type="file" id="fileInput" accept="image/*">
+<button onclick="saveData()">업데이트</button>
+
+<script>
+  function saveData() {
+    const file = document.getElementById('fileInput').files[0];
+    const text = document.getElementById('textInput').value;
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      const data = {
+        text: text,
+        img: e.target.result // 이미지 파일이 텍스트(Base64)로 변환됨
+      };
+      localStorage.setItem('boardData', JSON.stringify(data));
+      alert('저장되었습니다!');
+    };
+
+    if (file) {
+      reader.readAsDataURL(file); // 파일을 읽어서 URL로 변환
+    } else {
+      // 파일 없이 글만 저장할 경우
+      const data = { text: text, img: null };
+      localStorage.setItem('boardData', JSON.stringify(data));
+    }
+  }
+</script>
