@@ -1,0 +1,22 @@
+<div class="board">
+  <img id="displayImg" src="" style="max-width: 300px; display: none;">
+  <div id="displayText"></div>
+</div>
+
+<script>
+  function loadData() {
+    const rawData = localStorage.getItem('boardData');
+    if (rawData) {
+      const data = JSON.parse(rawData);
+      
+      document.getElementById('displayText').innerText = data.text;
+      
+      const imgTag = document.getElementById('displayImg');
+      if (data.img) {
+        imgTag.src = data.img;
+        imgTag.style.display = 'block'; // 이미지가 있으면 보여줌
+      }
+    }
+  }
+  setInterval(loadData, 1000);
+</script>
