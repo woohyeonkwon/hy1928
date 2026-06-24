@@ -1,29 +1,118 @@
-<h3>관리자 이미지 업로드</h3>
-<input type="text" id="textInput" placeholder="전광판 문구">
-<input type="file" id="fileInput" accept="image/*">
-<button onclick="saveData()">업데이트</button>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 서버 - 글 관리</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 중앙 배치를 위한 스타일 */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 50px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+        }
 
-<script>
-  function saveData() {
-    const file = document.getElementById('fileInput').files[0];
-    const text = document.getElementById('textInput').value;
-    const reader = new FileReader();
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
 
-    reader.onload = function(e) {
-      const data = {
-        text: text,
-        img: e.target.result // 이미지 파일이 텍스트(Base64)로 변환됨
-      };
-      localStorage.setItem('boardData', JSON.stringify(data));
-      alert('저장되었습니다!');
-    };
+        /* 컨트롤 패널 (글씨 크기 조절) */
+        .controls {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #eee;
+            border-radius: 10px;
+        }
 
-    if (file) {
-      reader.readAsDataURL(file); // 파일을 읽어서 URL로 변환
-    } else {
-      // 파일 없이 글만 저장할 경우
-      const data = { text: text, img: null };
-      localStorage.setItem('boardData', JSON.stringify(data));
-    }
-  }
-</script>
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            resize: vertical;
+            transition: font-size 0.2s ease;
+        }
+
+        .btn-save {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background-color: #00A9E0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .btn-save:hover { background-color: #0089b5; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>관리자 글 작성</h1>
+        
+        <div class="controls">
+            <label for="fontSize">글씨 크기 조절: </label>
+            <input type="range" id="fontSize" min="12" max="48" value="18">
+            <span id="sizeValue">18px</span>
+        </div>
+
+        <textarea id="content" placeholder="여기에 글을 작성하세요..."></textarea>
+        
+        <button class="btn-save" onclick="saveData()">서버에 저장하기</button>
+    </div>
+
+    <script>
+        const textarea = document.getElementById('content');
+        const fontSlider = document.getElementById('fontSize');
+        const sizeValue = document.getElementById('sizeValue');
+
+        // 1. 글씨 크기 조절 기능
+        fontSlider.addEventListener('input', (e) => {
+            const size = e.target.value + 'px';
+            textarea.style.fontSize = size;
+            sizeValue.innerText = size;
+        });
+
+        // 2. 저장 기능 (Local Storage 활용)
+        function saveData() {
+            const text = textarea.value;
+            localStorage.setItem('admin_text', text);
+            alert('성공적으로 저장되었습니다! (브라우저를 껐다 켜도 유지됩니다)');
+        }
+
+        // 3. 페이지 로드 시 기존 데이터 불러오기
+        window.onload = () => {
+            const savedText = localStorage.getItem('admin_text');
+            if(savedText) {
+                textarea.value = savedText;
+            }
+        };
+    </script>
+</body>
+</html>
+
+### 2. 적용 방법
+1.  컴퓨터의 `HY1928` 폴더에서 `admin.html` 파일을 열고 위 코드를 모두 복사해서 붙여넣고 저장하세요.
+2.  터미널에서 다시 명령어를 입력하세요:
+    ```bash
+    git add .
+    git commit -m "Admin UI 개선: 글씨 크기 및 저장 기능 추가"
+    git push
+    3.  Render 대시보드에서 배포가 완료되면, `https://hy1928-1.onrender.com/admin`에 접속해 확인해 보세요!
+
+이제 글을 쓰고 저장하면 브라우저를 새로고침해도 글이 그대로 남아있을 거예요. 만족하시나요? 추가로 더 필요한 기능이 있다면 말씀해 주세요!
